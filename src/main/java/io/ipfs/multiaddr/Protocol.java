@@ -29,7 +29,8 @@ public class Protocol {
         QUIC(460, 0, "quic"),
         WS(477, 0, "ws"),
         P2PCIRCUIT(290, 0, "p2p-circuit"),
-        HTTP(480, 0, "http");
+        HTTP(480, 0, "http"),
+        P2P(421, LENGTH_PREFIXED_VAR_SIZE, "p2p");
 
         public final int code, size;
         public final String name;
@@ -98,6 +99,16 @@ public class Protocol {
                         throw new IllegalStateException("Failed to parse "+type.name+" address "+addr + " (> 65535");
                     return new byte[]{(byte)(x >>8), (byte)x};
                 case IPFS: {
+                    Multihash hash = Cid.decode(addr);
+                    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                    byte[] hashBytes = hash.toBytes();
+                    byte[] varint = new byte[(32 - Integer.numberOfLeadingZeros(hashBytes.length) + 6) / 7];
+                    putUvarint(varint, hashBytes.length);
+                    bout.write(varint);
+                    bout.write(hashBytes);
+                    return bout.toByteArray();
+                }
+                case P2P: {
                     Multihash hash = Cid.decode(addr);
                     ByteArrayOutputStream bout = new ByteArrayOutputStream();
                     byte[] hashBytes = hash.toBytes();
@@ -196,6 +207,10 @@ public class Protocol {
             case DNS4:
             case DNS6:
             case DNSADDR:
+                buf = new byte[sizeForAddress];
+                read(in, buf);
+                return new String(buf);
+            case P2P:
                 buf = new byte[sizeForAddress];
                 read(in, buf);
                 return new String(buf);

@@ -74,6 +74,7 @@ public class MultiAddressTest {
                 "/ipfs/QmcgpsyWgH8Y8ajJz1Cu72KnS5uo2Aa2LpzU7kinSupNKC",
                 "/ipfs/zdpuAnNyxJR8tigBDe5FM2PfMq1u7fKSCsTmb4m3iJZcCq8yB",
                 "/ipfs/zdpuAnNyxJR8tigBDe5FM2PfMq1u7fKSCsTmb4m3iJZcCq8yB/p2p-circuit",
+                "/ip4/127.0.0.1/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ",
                 "/udp/1234/sctp/1234",
                 "/udp/1234/udt",
                 "/udp/1234/utp",
